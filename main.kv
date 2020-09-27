@@ -1,0 +1,94 @@
+<ContentNavigationDrawer>:
+
+    ScrollView:
+
+        MDList:
+
+            OneLineIconListItem:
+                text: "Livraison"
+                on_press:
+                    root.nav_drawer.set_state("close")
+                    root.screen_manager.current = "scr 1"
+                    app.root.ids.toolbar.title = "Livraison"
+                    
+                IconLeftWidget:
+                    icon: "cart-arrow-right"
+                
+
+            OneLineIconListItem:
+                text: "Commande"
+                on_press:
+                    root.nav_drawer.set_state("close")
+                    root.screen_manager.current = "scr 2"
+                    app.root.ids.toolbar.title = "Commande"
+                IconLeftWidget:
+                    icon: "database-plus"
+
+            OneLineIconListItem:
+                text: "Stock"
+                on_press:
+                    root.nav_drawer.set_state("close")
+                    root.screen_manager.current = "scr 3"
+                    app.root.ids.toolbar.title = "Gestion de Stock"
+                IconLeftWidget:
+                    icon: "store"
+
+            OneLineIconListItem:
+                text: "Statistique"
+                on_press:
+                    root.nav_drawer.set_state("close")
+                    root.screen_manager.current = "scr 4"
+                    app.root.ids.toolbar.title = "Statistique"
+                IconLeftWidget:
+                    icon: "chart-bar"
+
+Screen:
+    BoxLayout:
+        orientation: 'vertical'
+    	MDToolbar:
+    		title: 'Livraison'
+            id: toolbar
+    		left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
+        	on_action_button: app.callback(self.icon)
+
+
+        NavigationLayout:
+            x: toolbar.height
+
+            ScreenManager:
+                id: screen_manager
+
+                Screen:
+                    name: "scr 1"
+
+                    MDLabel:
+                        text: "Screen 1"
+                        halign: "center"
+
+                Screen:
+                    name: "scr 2"
+
+                    MDLabel:
+                        text: "Screen 2"
+                        halign: "center"
+
+                Screen:
+                    name: "scr 3"
+
+                    MDLabel:
+                        text: "Screen 3"
+                        halign: "center"
+
+                Screen:
+                    name: "scr 4"
+
+                    MDLabel:
+                        text: "Screen 4"
+                        halign: "center"
+
+            MDNavigationDrawer:
+                id: nav_drawer
+
+                ContentNavigationDrawer:
+                    screen_manager: screen_manager
+                    nav_drawer: nav_drawer
