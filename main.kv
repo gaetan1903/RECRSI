@@ -88,6 +88,7 @@ Screen:
 
                             MDTextField:
                                 id: quantite
+                                text: '1'
                                 pos_hint: {'center_x': .5, 'center_y': .1}
                                 hint_text: "Quantité"
                                 input_type: 'number'
@@ -107,12 +108,12 @@ Screen:
                             MDTextField:
                                 id: nomClient
                                 pos_hint: {'center_x': .5, 'center_y': .1}
-                                hint_text: "Nom Client"
+                                hint_text: "Nom du client"
 
                             MDTextField:
                                 id: dateLivraison
                                 pos_hint: {'center_x': .5, 'center_y': .1}
-                                hint_text: "Date Livraison"
+                                hint_text: "Date de livraison"
                                 on_focus: if self.focus: app.show_datePicker()
 
                             MDRaisedButton:

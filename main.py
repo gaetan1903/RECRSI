@@ -14,6 +14,12 @@ from kivymd.uix.menu import MDDropdownMenu
 from kivy.clock import Clock
 from kivymd.uix.picker import MDDatePicker
 from kivymd.uix.dialog import MDDialog
+from kivymd.uix.button import MDFlatButton
+
+#########################################
+from datetime import date
+from app import Database
+
 
 
 class ContentNavigationDrawer(BoxLayout):
@@ -25,6 +31,7 @@ class Application(MDApp):
 	def __init__(self, **kwargs):
 		super().__init__(**kwargs)
 		self.INTERFACE = Builder.load_file('main.kv')
+		self.database = Database()
 
 		menu_items = [{"text":f"item {i}"} for i in range(50)]
 		self.menu = MDDropdownMenu(
@@ -58,21 +65,54 @@ class Application(MDApp):
 		self.INTERFACE.ids.dateLivraison.text = date.__str__()
 	
 
-	def validateCommande(self):
-		# verification des champs vides
-		for val in [
-			self.INTERFACE.ids.refCommande,
-			self.INTERFACE.ids.quantite,
-			self.INTERFACE.ids.adresse,
-			self.INTERFACE.ids.contact,
-			self.INTERFACE.ids.dateLivraison
-		]:
-			if val.text.strip() == '':
-				return MDDialog(
-					title="Erreur de validation",
-					text=f"Le champ {val.hint_text} est obligatoire"
-				).open()
+	def validateCommande(self, **kwargs):
+		"""  Fonction Screen COMMANDE """
+		champs = [
+				self.INTERFACE.ids.refCommande,
+				self.INTERFACE.ids.quantite,
+				self.INTERFACE.ids.adresse,
+				self.INTERFACE.ids.contact,
+				self.INTERFACE.ids.dateLivraison
+			]
 
+		if not kwargs.get('validate_'):
+			# verification des champs vides
+			for val in champs:
+				if val.text.strip() == '':
+					return MDDialog(
+						title="Erreur de validation",
+						text=f"Le champ {val.hint_text} est obligatoire"
+					).open()
+			self.dialogCommande = MDDialog(
+				title="Confirmation",
+				text="Enregistrer la commande ?",
+				buttons=[
+					MDFlatButton(
+						text="Continuer",
+						text_color=self.theme_cls.primary_color,
+						on_release=lambda f: self.validateCommande(validate_=True)
+					)
+				]
+			)
+			self.dialogCommande.open()
+		else:
+			self.dialogCommande.dismiss()
+			for i in range(len(champs)): champs[i] = champs[i].text
+			champs.append(self.INTERFACE.ids.nomClient.text)
+			champs.append(date.today().__str__())
+			ret = self.database.insertCommande(*champs)
+			if ret[0]:
+				MDDialog(
+					title="Succes",
+					text="Commande effectué",
+					radius=[20, 7, 20, 7],
+				).open()
+			else:
+				MDDialog(
+					title="Erreur",
+					text=str(ret[1]),
+					radius=[20, 7, 20, 7],
+				).open()
 
 
 
