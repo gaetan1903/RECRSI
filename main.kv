@@ -1,3 +1,5 @@
+
+
 <ContentNavigationDrawer>:
 
     ScrollView:
@@ -68,10 +70,59 @@ Screen:
                 Screen:
                     name: "scr 2"
 
-                    MDLabel:
-                        text: "Screen 2"
-                        halign: "center"
+                    MDCard:
+                        size_hint: .8, .8
+                        pos_hint: {"center_x": .5, "center_y": .5}
+                        padding: "36dp"
 
+                        MDBoxLayout:
+                            adaptive_height: True
+                            orientation: 'vertical'
+                            pos_hint: {"center_x": .5, "center_y": .55}
+
+                            MDTextField:
+                                id: refCommande
+                                pos_hint: {'center_x': .5, 'center_y': .1}
+                                hint_text: "Reference Produit"
+                                on_focus: if self.focus: app.menu.open()
+
+                            MDTextField:
+                                id: quantite
+                                pos_hint: {'center_x': .5, 'center_y': .1}
+                                hint_text: "Quantité"
+                                input_type: 'number'
+
+                            MDTextField:
+                                id: adresse
+                                pos_hint: {'center_x': .5, 'center_y': .1}
+                                hint_text: "Adresse"
+
+                            MDTextField:
+                                id: contact
+                                pos_hint: {'center_x': .5, 'center_y': .1}
+                                hint_text: "Contact"
+                                input_type: 'number'
+
+
+                            MDTextField:
+                                id: nomClient
+                                pos_hint: {'center_x': .5, 'center_y': .1}
+                                hint_text: "Nom Client"
+
+                            MDTextField:
+                                id: dateLivraison
+                                pos_hint: {'center_x': .5, 'center_y': .1}
+                                hint_text: "Date Livraison"
+                                on_focus: if self.focus: app.show_datePicker()
+
+                            MDRaisedButton:
+                                text: "CONFIRMER"
+                                pos_hint: {"center_x": .5, "center_y": .1}
+                                md_bg_color: self.theme_cls.primary_color
+                                on_release: app.validateCommande()
+
+                                
+                            
                 Screen:
                     name: "scr 3"
 
